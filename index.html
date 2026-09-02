@@ -78,6 +78,16 @@
   /* Respeta la barra inferior / home indicator de móviles con "notch" (iPhone, etc.) */
   .safe-bottom-5 { bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
 
+  /* Mosaico de Instagram: leve velo oscuro al pasar el cursor, a modo de feed */
+  .ig-thumb::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background .3s ease;
+  }
+  .ig-thumb:hover::after { background: rgba(0, 0, 0, .25); }
+
   /* Hero a pantalla completa real en móvil: 100dvh evita saltos por la barra
      de direcciones del navegador; min-h-screen (100vh) queda como respaldo
      para navegadores que no soporten dvh. */
@@ -153,7 +163,7 @@
     <img
       src="ImagenesMejorSabe/LautyCuloRoto.png"
       alt="Nuestro equipo preparando pizza en el horno de Pizzería Mejor Sabe"
-      class="w-full h-full object-cover object-[65%_35%]"
+      class="w-full h-full object-cover object-[22%_28%] sm:object-[65%_35%]"
     />
     <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/50 to-black/70"></div>
   </div>
@@ -250,8 +260,31 @@
     </div>
 
     <!-- Bloque comunidad / Instagram -->
-    <div id="comunidad" class="flex flex-col justify-center bg-creamdark/70 border border-black/10 rounded-3xl p-8 sm:p-10 text-center">
-      <i data-lucide="instagram" class="w-8 h-8 mx-auto mb-4"></i>
+    <div id="comunidad" class="flex flex-col justify-center bg-creamdark/70 border border-black/10 rounded-3xl p-6 sm:p-8 text-center overflow-hidden">
+
+      <!-- Mosaico de fotos: da vida visual al bloque a modo de "vista previa" del feed -->
+      <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mb-6">
+        <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="ig-thumb group relative block aspect-square rounded-lg sm:rounded-xl overflow-hidden">
+          <img src="ImagenesMejorSabe/Pizza.png" alt="Pizza Serrana — Pizzería Mejor Sabe" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+        </a>
+        <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="ig-thumb group relative block aspect-square rounded-lg sm:rounded-xl overflow-hidden">
+          <img src="ImagenesMejorSabe/hambuerugesa.png" alt="Hamburguesa Mejor Sabe — Pizzería Mejor Sabe" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+        </a>
+        <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="ig-thumb group relative block aspect-square rounded-lg sm:rounded-xl overflow-hidden">
+          <img src="ImagenesMejorSabe/cocteles.png" alt="Coctelería de la casa — Pizzería Mejor Sabe" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+        </a>
+        <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="ig-thumb group relative block aspect-square rounded-lg sm:rounded-xl overflow-hidden hidden sm:block">
+          <img src="ImagenesMejorSabe/PIzzaPina.png" alt="Pizza Piña — Pizzería Mejor Sabe" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+        </a>
+        <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="ig-thumb group relative block aspect-square rounded-lg sm:rounded-xl overflow-hidden hidden sm:block">
+          <img src="ImagenesMejorSabe/coulantPostre.png" alt="Coulant de Chocolate — Pizzería Mejor Sabe" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+        </a>
+        <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="ig-thumb group relative block aspect-square rounded-lg sm:rounded-xl overflow-hidden hidden sm:block">
+          <img src="ImagenesMejorSabe/fingersQeso.png" alt="Fingers de Queso — Pizzería Mejor Sabe" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+        </a>
+      </div>
+
+      <i data-lucide="instagram" class="w-7 h-7 mx-auto mb-3"></i>
       <h3 class="font-display text-2xl sm:text-3xl mb-2">Síguenos en @tuusuario</h3>
       <p class="text-ink/60 mb-7 max-w-sm mx-auto">
         Nuevas pizzas, ofertas de temporada y el día a día del local, directo desde la barra.
@@ -317,13 +350,13 @@ const SITE_CONFIG = {
   // Deja "shifts: null" en los días de cierre.
   // index: 0 = Domingo ... 6 = Sábado (coincide con Date.getDay())
   hours: [
-    { index: 0, day: "Domingo",  shifts: [["13:00", "16:30"], ["20:00", "23:00"]] },
-    { index: 1, day: "Lunes",    shifts: null }, // cerrado
-    { index: 2, day: "Martes",   shifts: [["13:00", "16:00"], ["20:00", "23:30"]] },
-    { index: 3, day: "Miércoles",shifts: [["13:00", "16:00"], ["20:00", "23:30"]] },
-    { index: 4, day: "Jueves",   shifts: [["13:00", "16:00"], ["20:00", "23:30"]] },
-    { index: 5, day: "Viernes",  shifts: [["13:00", "16:00"], ["20:00", "00:00"]] },
-    { index: 6, day: "Sábado",   shifts: [["13:00", "16:30"], ["20:00", "00:00"]] },
+    { index: 0, day: "Domingo",  shifts: [["18:00", "00:00"]] },
+    { index: 1, day: "Lunes",    shifts: [["18:00", "00:00"]] },
+    { index: 2, day: "Martes",   shifts: null }, // cerrado
+    { index: 3, day: "Miércoles",shifts: [["18:00", "00:00"]] },
+    { index: 4, day: "Jueves",   shifts: [["18:00", "00:00"]] },
+    { index: 5, day: "Viernes",  shifts: [["18:00", "00:00"]] },
+    { index: 6, day: "Sábado",   shifts: [["18:00", "00:00"]] },
   ],
 };
 
