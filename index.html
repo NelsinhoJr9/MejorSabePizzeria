@@ -2,7 +2,7 @@
 <html lang="es" class="scroll-smooth">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Pizzería Mejor Sabe — Carta y Reservas</title>
 <meta name="description" content="Pizzería Mejor Sabe. Pizzas al horno de piedra, hamburguesas, coctelería y postres caseros. Consulta la carta y reserva tu mesa." />
 
@@ -74,6 +74,17 @@
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
   .float-btn { animation: floatIn .5s ease .6s both; }
+
+  /* Respeta la barra inferior / home indicator de móviles con "notch" (iPhone, etc.) */
+  .safe-bottom-5 { bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
+
+  /* Hero a pantalla completa real en móvil: 100dvh evita saltos por la barra
+     de direcciones del navegador; min-h-screen (100vh) queda como respaldo
+     para navegadores que no soporten dvh. */
+  #inicio { min-height: 100vh; }
+  @supports (height: 100dvh) {
+    #inicio { min-height: 100dvh; }
+  }
 </style>
 </head>
 
@@ -88,7 +99,7 @@
 
       <!-- Imagotipo de la marca -->
       <a href="#inicio" class="flex items-center gap-2 shrink-0">
-        <img src="ImagenesMejorSabe/logo-mejor-sabe.png" alt="Pizzería Mejor Sabe" class="h-9 sm:h-11 w-auto" />
+        <img src="ImagenesMejorSabe/logo-mejor-sabe.png" alt="Pizzería Mejor Sabe" class="h-8 xs:h-9 sm:h-11 w-auto" />
       </a>
 
       <!-- Navegación desktop -->
@@ -98,21 +109,21 @@
         <a href="#comunidad" class="hover:opacity-60 transition-opacity">Instagram</a>
       </nav>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1.5 xs:gap-2 sm:gap-3">
         <!-- Enlace directo a Instagram -->
         <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" aria-label="Instagram de Pizzería Mejor Sabe" class="hidden sm:inline-flex items-center justify-center p-2 rounded-full border border-black/10 hover:bg-ink hover:text-cream transition-colors">
           <i data-lucide="instagram" class="w-4 h-4"></i>
         </a>
 
         <!-- CTA Reservar Mesa -->
-        <a id="reservar-btn" href="#" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-ink text-cream text-sm font-medium px-4 sm:px-5 py-2.5 rounded-full hover:opacity-85 transition-opacity text-center">
+        <a id="reservar-btn" href="#" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-ink text-cream text-xs xs:text-sm font-medium px-3 xs:px-4 sm:px-5 py-2 xs:py-2.5 rounded-full hover:opacity-85 transition-opacity text-center">
           <i data-lucide="calendar-check" class="w-4 h-4 shrink-0"></i>
           <span class="hidden xs:inline whitespace-nowrap">Reservar Mesa</span>
           <span class="inline xs:hidden whitespace-nowrap">Reservar</span>
         </a>
 
         <!-- Botón menú móvil -->
-        <button id="mobile-menu-btn" aria-label="Abrir menú" aria-expanded="false" class="md:hidden flex items-center justify-center p-2 rounded-full border border-black/10">
+        <button id="mobile-menu-btn" aria-label="Abrir menú" aria-expanded="false" class="md:hidden flex items-center justify-center p-2 rounded-full border border-black/10 shrink-0">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
       </div>
@@ -121,11 +132,11 @@
 
   <!-- Menú móvil desplegable -->
   <nav id="mobile-menu" hidden class="md:hidden bg-cream border-t border-black/10">
-    <div class="px-4 py-4 flex flex-col gap-4 text-sm font-medium">
-      <a href="#carta" class="mobile-link">Carta</a>
-      <a href="#ubicacion" class="mobile-link">Ubicación &amp; Horarios</a>
-      <a href="#comunidad" class="mobile-link">Instagram</a>
-      <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="mobile-link flex items-center gap-2">
+    <div class="px-4 py-2 flex flex-col divide-y divide-black/5 text-sm font-medium">
+      <a href="#carta" class="mobile-link py-3">Carta</a>
+      <a href="#ubicacion" class="mobile-link py-3">Ubicación &amp; Horarios</a>
+      <a href="#comunidad" class="mobile-link py-3">Instagram</a>
+      <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="mobile-link flex items-center gap-2 py-3">
         <i data-lucide="instagram" class="w-4 h-4"></i> @tuusuario
       </a>
     </div>
@@ -135,7 +146,7 @@
 <!-- =========================================================
      HERO
 ========================================================= -->
-<section id="inicio" class="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-center pt-20 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+<section id="inicio" class="relative flex flex-col justify-center pt-20 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
 
   <!-- Foto de equipo/cocina de fondo, con velo oscuro para que el texto siga siendo legible -->
   <div class="absolute inset-0 -z-10">
@@ -267,7 +278,7 @@
      BOTONES FLOTANTES DE ACCIÓN RÁPIDA
 ========================================================= -->
 <a id="whatsapp-float" href="#" target="_blank" rel="noopener" aria-label="Reservar por WhatsApp"
-   class="float-btn fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-ink text-cream flex items-center justify-center shadow-lg hover:opacity-85 transition-opacity">
+   class="float-btn safe-bottom-5 fixed right-5 z-50 w-14 h-14 rounded-full bg-ink text-cream flex items-center justify-center shadow-lg hover:opacity-85 transition-opacity">
   <!-- Logo real de WhatsApp en SVG inline (no depende de librerías de iconos externas) -->
   <svg viewBox="0 0 32 32" class="w-7 h-7 fill-current" aria-hidden="true">
     <path d="M16.004 3C9.377 3 4 8.373 4 15c0 2.386.702 4.61 1.912 6.478L4 29l7.72-1.874A11.94 11.94 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3Zm6.98 16.982c-.293.822-1.45 1.548-2.363 1.744-.63.135-1.454.243-4.226-.907-3.545-1.469-5.83-5.05-6.007-5.284-.17-.234-1.44-1.918-1.44-3.659 0-1.74.913-2.596 1.238-2.95.325-.353.71-.44.947-.44.237 0 .474.002.68.012.218.011.512-.083.8.61.293.703 1 2.436 1.088 2.614.088.178.147.386.03.62-.118.235-.177.382-.353.588-.176.207-.37.462-.53.622-.176.176-.36.367-.155.72.206.353.914 1.51 1.964 2.446 1.35 1.203 2.487 1.575 2.84 1.75.353.176.56.147.767-.088.206-.235.883-1.03 1.118-1.383.235-.353.47-.294.793-.176.324.117 2.055.97 2.408 1.146.353.176.588.264.674.412.088.147.088.851-.205 1.673Z"/>
@@ -275,7 +286,7 @@
 </a>
 
 <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" aria-label="Instagram"
-   class="float-btn fixed bottom-5 left-5 z-50 w-12 h-12 rounded-full bg-white border border-black/10 text-ink flex items-center justify-center shadow-lg hover:bg-ink hover:text-cream transition-colors">
+   class="float-btn safe-bottom-5 fixed left-5 z-50 w-12 h-12 rounded-full bg-white border border-black/10 text-ink flex items-center justify-center shadow-lg hover:bg-ink hover:text-cream transition-colors">
   <i data-lucide="instagram" class="w-5 h-5"></i>
 </a>
 
@@ -294,7 +305,7 @@
 const SITE_CONFIG = {
   // Número en formato internacional, solo dígitos (sin "+", sin espacios).
   // Ejemplo España: "34600000000"
-  whatsappNumber: "34XXXXXXXXX", // EDITA: tu número real de WhatsApp
+  whatsappNumber: "34722592199", // Número real del local
 
   whatsappMessage: "Hola, quiero reservar una mesa en Pizzería Mejor Sabe...",
 
