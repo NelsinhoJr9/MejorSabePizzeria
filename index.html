@@ -88,6 +88,32 @@
   }
   .ig-thumb:hover::after { background: rgba(0, 0, 0, .25); }
 
+  /* =====================================================================
+     PASARELA DE RESEÑAS DE GOOGLE (marquee en movimiento continuo)
+  ===================================================================== */
+  .reviews-marquee-wrap {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+  .reviews-track {
+    animation: reviews-scroll 45s linear infinite;
+  }
+  /* Se pausa al pasar el cursor o el dedo, para poder leer con calma */
+  .reviews-marquee-wrap:hover .reviews-track,
+  .reviews-marquee-wrap:focus-within .reviews-track {
+    animation-play-state: paused;
+  }
+  @keyframes reviews-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); } /* -50% porque el listado se duplica una vez */
+  }
+  /* Respeta a quien prefiere menos movimiento en pantalla */
+  @media (prefers-reduced-motion: reduce) {
+    .reviews-track { animation: none; }
+  }
+  .review-card { width: 19rem; }
+  @media (min-width: 640px) { .review-card { width: 22rem; } }
+
   /* Hero a pantalla completa real en móvil: 100dvh evita saltos por la barra
      de direcciones del navegador; min-h-screen (100vh) queda como respaldo
      para navegadores que no soporten dvh. */
@@ -215,8 +241,7 @@
 
     <!-- Pestañas de categoría: horizontales, deslizables en móvil -->
     <div id="tabs" class="flex gap-2 overflow-x-auto no-scrollbar mb-10 sticky top-16 sm:top-20 z-20 bg-creamdark/95 backdrop-blur-sm py-3 -mx-4 px-4 sm:mx-0 sm:px-0 sm:justify-center">
-      <button data-category="todos" class="tab-btn is-active shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Todos</button>
-      <button data-category="entrantes" class="tab-btn shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Entrantes</button>
+      <button data-category="entrantes" class="tab-btn is-active shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Entrantes</button>
       <button data-category="principales" class="tab-btn shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Principales</button>
       <button data-category="postres" class="tab-btn shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Postres</button>
       <button data-category="bebidas" class="tab-btn shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Bebidas</button>
@@ -293,6 +318,33 @@
         <i data-lucide="instagram" class="w-4 h-4"></i>
         Ver Instagram
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     RESEÑAS DE GOOGLE — pasarela en movimiento continuo
+========================================================= -->
+<section id="resenas" class="py-14 sm:py-20 bg-cream overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
+    <div class="inline-flex items-center gap-2 bg-white border border-black/10 rounded-full px-4 py-1.5 text-xs sm:text-sm text-ink/70 mb-4">
+      <!-- Logo "G" de Google, para atribuir la fuente de las reseñas -->
+      <svg viewBox="0 0 48 48" class="w-4 h-4 shrink-0" aria-hidden="true">
+        <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/>
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l5.7-5.7C34.6 6.1 29.6 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+        <path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.6C29.6 35.1 26.9 36 24 36c-5.3 0-9.7-3.1-11.3-7.6l-6.5 5C9.6 39.6 16.2 44 24 44z"/>
+        <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.6l6.6 5.6C41.9 35.9 44 30.6 44 24c0-1.3-.1-2.7-.4-3.5z"/>
+      </svg>
+      Reseñas de Google
+    </div>
+    <h2 class="font-display text-3xl sm:text-4xl mb-2">Lo que dicen de nosotros</h2>
+    <p class="text-ink/60 text-sm sm:text-base">Opiniones reales de clientes, directo de nuestra ficha de Google.</p>
+  </div>
+
+  <!-- Pasarela: el listado se pinta dos veces seguidas y se desliza sin cortes -->
+  <div class="reviews-marquee-wrap relative">
+    <div id="reviews-track" class="reviews-track flex gap-5 w-max px-4 sm:px-6 lg:px-8">
+      <!-- las tarjetas de reseña se inyectan aquí por JS a partir de REVIEWS_DATA -->
     </div>
   </div>
 </section>
@@ -489,16 +541,59 @@ const MENU_DATA = [
 ];
 
 /* =====================================================================
+   RESEÑAS DE GOOGLE
+   -----------------------------------------------------------------
+   Reseñas reales copiadas de la ficha de Google del local. Para
+   añadir o quitar una, basta con editar este array: la pasarela se
+   regenera sola. El orden aquí es el orden en que aparecen (la de
+   Mario Fernandez se deja al final a propósito).
+===================================================================== */
+const REVIEWS_DATA = [
+  {
+    name: "Anabel Saavedra Ramirez",
+    meta: "3 reseñas · 2 fotos",
+    time: "Hace 5 meses",
+    text: "La comida, el servicio y el ambiente… sin palabras de lo bien que hemos estado. Los nachos y las pizzas, deliciosas 😊",
+  },
+  {
+    name: "Carmen Payá",
+    meta: "8 reseñas · 3 fotos",
+    time: "Hace 7 meses",
+    text: "Es un restaurante al que volvería, y que vale muchísimo la pena, tanto por la calidad de la comida como por el buen servicio. ¡Un 10 de 10 sin lugar a dudas!",
+  },
+  {
+    name: "Librepensador Estoico",
+    badge: "Local Guide",
+    meta: "38 reseñas · 6 fotos",
+    time: "Hace 2 meses",
+    text: "Un excelente lugar donde disfrutar de una buena pizza y muchas cosas más. Un ambiente perfecto, muy buena ubicación y un servicio genial.",
+  },
+  {
+    name: "Chiara Soltys",
+    meta: "10 reseñas · 2 fotos",
+    time: "Hace 8 meses",
+    text: "Excelente servicio y amabilidad, de las mejores pizzas que he probado. Muy buena la atención de Lautaro, ¡súper recomendable! Volveremos cada fin de semana.",
+  },
+  {
+    name: "Mario Fernandez",
+    meta: "3 reseñas",
+    time: "Hace 3 años",
+    text: "Una mezcla de etnias muy amables, con un gran recibimiento. Es más que agradable disfrutar de la gastronomía italiana con ingredientes españoles, elaborada por un argentino y servida con un trato que no necesita tu cartera. Imposible encontrar mejor experiencia gastronómica y multicultural en Chiva.",
+  },
+];
+
+/* =====================================================================
    INICIALIZACIÓN
 ===================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   applyConfigLinks();
-  renderMenu("todos");
+  renderMenu("entrantes"); // Arranca mostrando una sola categoría, no la carta entera
   setupTabs();
   setupMobileMenu();
   setupHeaderScroll();
   renderHours();
   updateOpenBadge();
+  renderReviews();
   document.getElementById("year").textContent = new Date().getFullYear();
 
   if (window.lucide) lucide.createIcons();
@@ -536,16 +631,16 @@ function applyConfigLinks() {
 }
 
 /* ---------------------------------------------------------------------
-   Renderiza la carta a partir de MENU_DATA. Puede filtrarse por
-   categoría; "todos" muestra el listado completo.
+   Renderiza únicamente los platos de la categoría seleccionada. Así
+   el cliente ve solo lo que le interesa, sin tener que bajar por
+   toda la carta para llegar, por ejemplo, a las bebidas.
 --------------------------------------------------------------------- */
 function renderMenu(category) {
   const grid = document.getElementById("menu-grid");
   const empty = document.getElementById("menu-empty");
   grid.innerHTML = "";
 
-  const items =
-    category === "todos" ? MENU_DATA : MENU_DATA.filter((d) => d.category === category);
+  const items = MENU_DATA.filter((d) => d.category === category);
 
   if (items.length === 0) {
     empty.hidden = false;
@@ -677,6 +772,45 @@ function renderHours() {
         </li>`;
     })
     .join("");
+}
+
+/* ---------------------------------------------------------------------
+   Pinta la pasarela de reseñas. El array REVIEWS_DATA se dibuja dos
+   veces, una a continuación de la otra, para que la animación CSS
+   (translateX(-50%)) genere un scroll infinito sin cortes visibles.
+--------------------------------------------------------------------- */
+function renderReviews() {
+  const track = document.getElementById("reviews-track");
+  const doubled = [...REVIEWS_DATA, ...REVIEWS_DATA];
+  track.innerHTML = doubled.map(buildReviewCardHTML).join("");
+}
+
+function buildReviewCardHTML(review) {
+  const initial = review.name.trim().charAt(0).toUpperCase();
+  const stars = '<i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>'.repeat(5);
+
+  return `
+    <article class="review-card shrink-0 bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-3 text-left" aria-hidden="true">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-ink text-cream flex items-center justify-center font-display text-base shrink-0">
+          ${initial}
+        </div>
+        <div class="min-w-0">
+          <p class="font-medium text-sm truncate">${review.name}</p>
+          <p class="text-xs text-ink/50 truncate">
+            ${review.badge ? review.badge + " · " : ""}${review.meta}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="flex gap-0.5">${stars}</div>
+        <span class="text-xs text-ink/40">${review.time}</span>
+      </div>
+
+      <p class="text-sm text-ink/70 leading-relaxed">${review.text}</p>
+    </article>
+  `;
 }
 
 /* ---------------------------------------------------------------------
