@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   applyConfigLinks();
   renderMenu("entrantes"); // Arranca mostrando una sola categoría, no la carta entera (solo aplica en carta.html)
   setupTabs();
+  setupDishToggle();
   setupMobileMenu();
   setupHeaderScroll();
   renderHours();
@@ -95,6 +96,11 @@ function renderMenu(category) {
   if (window.lucide) lucide.createIcons();
 }
 
+// En móvil (< 640px) la carta es una lista de nombres: la foto y la
+// descripción se despliegan al tocar el plato. En tablet/ordenador las
+// tarjetas se ven completas como siempre (ver .dish-card en site.css).
+const DESKTOP_MQ = window.matchMedia("(min-width: 640px)");
+
 function buildDishCard(dish) {
   const card = document.createElement("article");
   card.className =
@@ -108,19 +114,28 @@ function buildDishCard(dish) {
       ? dish.price.toFixed(2).replace(".", ",") + " €"
       : "";
 
+  // En móvil la foto no se descarga hasta que se despliega el plato
+  // (data-src), así la carta carga rápido y gasta menos datos.
+  const imgSrcAttr = DESKTOP_MQ.matches ? "src" : "data-src";
+
   card.innerHTML = `
+    <h3 class="font-display text-lg leading-snug">
+      <button type="button" class="dish-toggle w-full flex items-start justify-between gap-3 text-left px-5 pt-4 pb-4 sm:pt-5 sm:pb-2" aria-expanded="false">
+        <span>${dish.name}</span>
+        <span class="flex items-center gap-2 shrink-0">
+          ${priceText ? `<span class="font-sans text-base font-medium whitespace-nowrap">${priceText}</span>` : ""}
+          <i data-lucide="chevron-down" class="dish-chevron w-4 h-4 mt-1 sm:hidden"></i>
+        </span>
+      </button>
+    </h3>
     ${
       dish.image
-        ? `<div class="aspect-[4/3] overflow-hidden bg-creamdark">
-             <img src="${dish.image}" alt="${dish.name}" loading="lazy" class="w-full h-full object-cover" />
+        ? `<div class="dish-media aspect-[4/3] overflow-hidden bg-creamdark">
+             <img ${imgSrcAttr}="${dish.image}" alt="${dish.name}" loading="lazy" class="w-full h-full object-cover" />
            </div>`
         : ""
     }
-    <div class="p-5 flex flex-col gap-2 flex-1">
-      <div class="flex items-start justify-between gap-3">
-        <h3 class="font-display text-lg leading-snug">${dish.name}</h3>
-        ${priceText ? `<span class="font-medium whitespace-nowrap">${priceText}</span>` : ""}
-      </div>
+    <div class="dish-body px-5 pb-5 pt-3 sm:pt-0 flex flex-col gap-2 flex-1">
       <p class="text-sm text-ink/60 flex-1">${dish.description}</p>
       ${
         dish.tags && dish.tags.length
@@ -137,6 +152,38 @@ function buildDishCard(dish) {
     </div>
   `;
   return card;
+}
+
+// Carga la foto real de un plato que aún solo tiene data-src.
+function loadDishImages(root) {
+  root.querySelectorAll("img[data-src]").forEach((img) => {
+    img.src = img.dataset.src;
+    img.removeAttribute("data-src");
+  });
+}
+
+/* ---------------------------------------------------------------------
+   Plegables de la carta en móvil: un solo listener en el grid (sirve
+   también para los platos que se pintan al cambiar de pestaña).
+--------------------------------------------------------------------- */
+function setupDishToggle() {
+  const grid = document.getElementById("menu-grid");
+  if (!grid) return;
+
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".dish-toggle");
+    if (!btn || DESKTOP_MQ.matches) return;
+    const card = btn.closest(".dish-card");
+    const open = card.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", String(open));
+    if (open) loadDishImages(card);
+  });
+
+  // Si se gira el móvil o se agranda la ventana a tamaño escritorio,
+  // las tarjetas se ven completas: cargamos las fotos pendientes.
+  DESKTOP_MQ.addEventListener("change", (e) => {
+    if (e.matches) loadDishImages(grid);
+  });
 }
 
 /* ---------------------------------------------------------------------

@@ -20,6 +20,30 @@ h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
 .dish-card { transition: opacity .25s ease, transform .25s ease; }
 .dish-card[hidden] { display: none; }
 
+/* Carta en móvil: lista de nombres plegable. Al tocar un plato
+   (.is-open) se despliegan su foto y su descripción. */
+@media (max-width: 639px) {
+  .dish-card:not(.is-open) .dish-media,
+  .dish-card:not(.is-open) .dish-body { display: none; }
+  .dish-card.is-open .dish-media,
+  .dish-card.is-open .dish-body { animation: dishOpen .25s ease both; }
+  .dish-chevron { transition: transform .25s ease; }
+  .dish-card.is-open .dish-chevron { transform: rotate(180deg); }
+}
+/* En tablet/ordenador la foto va arriba, como siempre, y el nombre no es clicable */
+@media (min-width: 640px) {
+  .dish-media { order: -1; }
+  .dish-toggle { cursor: default; }
+}
+@keyframes dishOpen {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dish-card.is-open .dish-media,
+  .dish-card.is-open .dish-body { animation: none; }
+}
+
 /* Botones flotantes: pequeño "pop" de entrada */
 @keyframes floatIn {
   from { opacity: 0; transform: translateY(12px) scale(.9); }
