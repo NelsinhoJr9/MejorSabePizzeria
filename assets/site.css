@@ -1,0 +1,75 @@
+/* =====================================================================
+   ESTILOS COMPARTIDOS — usados por todas las páginas del sitio
+   (index.html, carta.html, aviso-legal.html, cookies.html)
+===================================================================== */
+body { font-family: 'Inter', sans-serif; background-color: #F9F6F0; color: #1A1A1A; }
+h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
+
+/* Oculta la barra de scroll de las pestañas de categoría sin perder la función */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Pestaña de categoría activa (carta) */
+.tab-btn.is-active {
+  background-color: #1A1A1A;
+  color: #F9F6F0;
+  border-color: #1A1A1A;
+}
+
+/* Transición suave al filtrar platos */
+.dish-card { transition: opacity .25s ease, transform .25s ease; }
+.dish-card[hidden] { display: none; }
+
+/* Botones flotantes: pequeño "pop" de entrada */
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(12px) scale(.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.float-btn { animation: floatIn .5s ease .6s both; }
+
+/* Respeta la barra inferior / home indicator de móviles con "notch" (iPhone, etc.) */
+.safe-bottom-5 { bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
+
+/* Mosaico de Instagram: leve velo oscuro al pasar el cursor, a modo de feed */
+.ig-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background .3s ease;
+}
+.ig-thumb:hover::after { background: rgba(0, 0, 0, .25); }
+
+/* =====================================================================
+   PASARELA DE RESEÑAS DE GOOGLE (marquee en movimiento continuo)
+===================================================================== */
+.reviews-marquee-wrap {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.reviews-track {
+  animation: reviews-scroll 45s linear infinite;
+}
+/* Se pausa al pasar el cursor o el dedo, para poder leer con calma */
+.reviews-marquee-wrap:hover .reviews-track,
+.reviews-marquee-wrap:focus-within .reviews-track {
+  animation-play-state: paused;
+}
+@keyframes reviews-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); } /* -50% porque el listado se duplica una vez */
+}
+/* Respeta a quien prefiere menos movimiento en pantalla */
+@media (prefers-reduced-motion: reduce) {
+  .reviews-track { animation: none; }
+}
+.review-card { width: 19rem; }
+@media (min-width: 640px) { .review-card { width: 22rem; } }
+
+/* Hero a pantalla completa real en móvil: 100dvh evita saltos por la barra
+   de direcciones del navegador; min-h-screen (100vh) queda como respaldo
+   para navegadores que no soporten dvh. */
+#inicio { min-height: 100vh; }
+@supports (height: 100dvh) {
+  #inicio { min-height: 100dvh; }
+}

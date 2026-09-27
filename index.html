@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Pizzería Mejor Sabe — Carta y Reservas</title>
-<meta name="description" content="Pizzería Mejor Sabe. Pizzas al horno de piedra, hamburguesas, coctelería y postres caseros. Consulta la carta y reserva tu mesa." />
+<title>Pizzería Mejor Sabe — Pizza Artesanal en Chiva</title>
+<meta name="description" content="Pizzería Mejor Sabe. Pizzas al horno de piedra, hamburguesas, coctelería y postres caseros en Chiva, Valencia. Consulta la carta y reserva tu mesa." />
 
 <!-- =========================================================
      FAVICON / OG IMAGE
@@ -16,30 +16,10 @@
 <meta property="og:image" content="ImagenesMejorSabe/logo-mejor-sabe.png" />
 
 <!-- =========================================================
-     TAILWIND CSS (CDN) + config de tema
+     TAILWIND CSS (CDN) + configuración de tema compartida
 ========================================================= -->
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          cream: "#F9F6F0",
-          creamdark: "#F1EBDD",
-          ink: "#1A1A1A",
-        },
-        fontFamily: {
-          serif: ["'Playfair Display'", "serif"],
-          sans: ["'Inter'", "sans-serif"],
-        },
-        // Breakpoint extra para textos cortos en botones muy pequeños (móviles estrechos)
-        screens: {
-          xs: "420px",
-        },
-      },
-    },
-  };
-</script>
+<script src="assets/tailwind-config.js"></script>
 
 <!-- Google Fonts: Playfair Display (titulares) + Inter (texto funcional) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -49,100 +29,30 @@
 <!-- Lucide Icons (CDN) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide-static/0.462.0/umd/lucide.min.js"></script>
 
-<style>
-  body { font-family: 'Inter', sans-serif; background-color: #F9F6F0; color: #1A1A1A; }
-  h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
-
-  /* Oculta la barra de scroll de las pestañas de categoría sin perder la función */
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-  /* Pestaña de categoría activa */
-  .tab-btn.is-active {
-    background-color: #1A1A1A;
-    color: #F9F6F0;
-    border-color: #1A1A1A;
-  }
-
-  /* Transición suave al filtrar platos */
-  .dish-card { transition: opacity .25s ease, transform .25s ease; }
-  .dish-card[hidden] { display: none; }
-
-  /* Botones flotantes: pequeño "pop" de entrada */
-  @keyframes floatIn {
-    from { opacity: 0; transform: translateY(12px) scale(.9); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .float-btn { animation: floatIn .5s ease .6s both; }
-
-  /* Respeta la barra inferior / home indicator de móviles con "notch" (iPhone, etc.) */
-  .safe-bottom-5 { bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
-
-  /* Mosaico de Instagram: leve velo oscuro al pasar el cursor, a modo de feed */
-  .ig-thumb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0);
-    transition: background .3s ease;
-  }
-  .ig-thumb:hover::after { background: rgba(0, 0, 0, .25); }
-
-  /* =====================================================================
-     PASARELA DE RESEÑAS DE GOOGLE (marquee en movimiento continuo)
-  ===================================================================== */
-  .reviews-marquee-wrap {
-    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-  }
-  .reviews-track {
-    animation: reviews-scroll 45s linear infinite;
-  }
-  /* Se pausa al pasar el cursor o el dedo, para poder leer con calma */
-  .reviews-marquee-wrap:hover .reviews-track,
-  .reviews-marquee-wrap:focus-within .reviews-track {
-    animation-play-state: paused;
-  }
-  @keyframes reviews-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); } /* -50% porque el listado se duplica una vez */
-  }
-  /* Respeta a quien prefiere menos movimiento en pantalla */
-  @media (prefers-reduced-motion: reduce) {
-    .reviews-track { animation: none; }
-  }
-  .review-card { width: 19rem; }
-  @media (min-width: 640px) { .review-card { width: 22rem; } }
-
-  /* Hero a pantalla completa real en móvil: 100dvh evita saltos por la barra
-     de direcciones del navegador; min-h-screen (100vh) queda como respaldo
-     para navegadores que no soporten dvh. */
-  #inicio { min-height: 100vh; }
-  @supports (height: 100dvh) {
-    #inicio { min-height: 100dvh; }
-  }
-</style>
+<!-- Estilos compartidos por todas las páginas del sitio -->
+<link rel="stylesheet" href="assets/site.css" />
 </head>
 
 <body class="bg-cream text-ink antialiased">
 
 <!-- =========================================================
      HEADER / NAVBAR — fijo, con efecto blur al hacer scroll
+     (idéntico en todas las páginas del sitio)
 ========================================================= -->
 <header id="site-header" class="fixed top-0 inset-x-0 z-40 border-b border-black/0 transition-all duration-300">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 sm:h-20">
 
       <!-- Imagotipo de la marca -->
-      <a href="#inicio" class="flex items-center gap-2 shrink-0">
+      <a href="index.html#inicio" class="flex items-center gap-2 shrink-0">
         <img src="ImagenesMejorSabe/logo-mejor-sabe.png" alt="Pizzería Mejor Sabe" class="h-8 xs:h-9 sm:h-11 w-auto" />
       </a>
 
       <!-- Navegación desktop -->
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-        <a href="#carta" class="hover:opacity-60 transition-opacity">Carta</a>
-        <a href="#ubicacion" class="hover:opacity-60 transition-opacity">Ubicación &amp; Horarios</a>
-        <a href="#comunidad" class="hover:opacity-60 transition-opacity">Instagram</a>
+        <a href="carta.html" class="hover:opacity-60 transition-opacity">Carta</a>
+        <a href="index.html#quienes-somos" class="hover:opacity-60 transition-opacity">Quiénes Somos</a>
+        <a href="index.html#ubicacion" class="hover:opacity-60 transition-opacity">Ubicación &amp; Horarios</a>
       </nav>
 
       <div class="flex items-center gap-1.5 xs:gap-2 sm:gap-3">
@@ -169,9 +79,9 @@
   <!-- Menú móvil desplegable -->
   <nav id="mobile-menu" hidden class="md:hidden bg-cream border-t border-black/10">
     <div class="px-4 py-2 flex flex-col divide-y divide-black/5 text-sm font-medium">
-      <a href="#carta" class="mobile-link py-3">Carta</a>
-      <a href="#ubicacion" class="mobile-link py-3">Ubicación &amp; Horarios</a>
-      <a href="#comunidad" class="mobile-link py-3">Instagram</a>
+      <a href="carta.html" class="mobile-link py-3">Carta</a>
+      <a href="index.html#quienes-somos" class="mobile-link py-3">Quiénes Somos</a>
+      <a href="index.html#ubicacion" class="mobile-link py-3">Ubicación &amp; Horarios</a>
       <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener" class="mobile-link flex items-center gap-2 py-3">
         <i data-lucide="instagram" class="w-4 h-4"></i> @tuusuario
       </a>
@@ -187,7 +97,7 @@
   <!-- Foto de equipo/cocina de fondo, con velo oscuro para que el texto siga siendo legible -->
   <div class="absolute inset-0 -z-10">
     <img
-      src="ImagenesMejorSabe/LautyCuloRoto.png"
+      src="ImagenesMejorSabe/lautyCuloRoto.jpg"
       alt="Nuestro equipo preparando pizza en el horno de Pizzería Mejor Sabe"
       class="w-full h-full object-cover object-[22%_28%] sm:object-[65%_35%]"
     />
@@ -211,9 +121,9 @@
     </p>
 
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-      <a href="#carta" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-cream text-ink font-medium px-7 py-3.5 rounded-full hover:opacity-85 transition-opacity">
+      <a href="carta.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-cream text-ink font-medium px-7 py-3.5 rounded-full hover:opacity-85 transition-opacity">
         Ver Carta
-        <i data-lucide="arrow-down" class="w-4 h-4"></i>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
       </a>
       <a id="hero-maps-btn" href="#" target="_blank" rel="noopener" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white text-white font-medium px-7 py-3.5 rounded-full hover:bg-white hover:text-ink transition-colors">
         <i data-lucide="map-pin" class="w-4 h-4"></i>
@@ -224,51 +134,54 @@
 </section>
 
 <!-- =========================================================
-     CARTA INTERACTIVA
+     QUIÉN SOY
 ========================================================= -->
-<section id="carta" class="px-4 sm:px-6 lg:px-8 py-14 sm:py-20 bg-creamdark/60">
-  <div class="max-w-6xl mx-auto">
+<section id="quienes-somos" class="px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+  <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center">
 
-    <div class="text-center mb-10">
-      <h2 class="font-display text-3xl sm:text-4xl mb-3">Nuestra Carta</h2>
-
-      <!-- Banner para lectura desde QR en mesa -->
-      <div class="inline-flex items-center gap-2 bg-white border border-black/10 rounded-full px-4 py-2 text-xs sm:text-sm text-ink/70">
-        <i data-lucide="smartphone" class="w-4 h-4 shrink-0"></i>
-        Carta digital de mesa. Para ordenar, avisa a nuestro equipo.
-      </div>
+    <div class="rounded-3xl overflow-hidden aspect-[4/3] md:aspect-[4/5]">
+      <img
+        src="ImagenesMejorSabe/lautyQuienesSomos.png"
+        alt="Lauta, el pizzero de Pizzería Mejor Sabe, emplatando pizzas recién salidas del horno"
+        loading="lazy"
+        class="w-full h-full object-cover"
+      />
     </div>
 
-    <!-- Pestañas de categoría: horizontales, deslizables en móvil -->
-    <div id="tabs" class="flex gap-2 overflow-x-auto no-scrollbar mb-10 sticky top-16 sm:top-20 z-20 bg-creamdark/95 backdrop-blur-sm py-3 -mx-4 px-4 sm:mx-0 sm:px-0 sm:justify-center">
-      <button data-category="entrantes" class="tab-btn is-active shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Entrantes</button>
-      <button data-category="principales" class="tab-btn shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Principales</button>
-      <button data-category="postres" class="tab-btn shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Postres</button>
-      <button data-category="bebidas" class="tab-btn shrink-0 border border-black/15 rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap transition-colors">Bebidas</button>
+    <div class="text-center md:text-left">
+      <p class="text-xs uppercase tracking-widest text-ink/50 mb-3">Quién Soy</p>
+      <h2 class="font-display text-3xl sm:text-4xl mb-4 leading-tight">
+        Lauta, el Pizzero Argentino con sabor a Italia
+      </h2>
+      <p class="text-ink/70 leading-relaxed mb-4">
+        Después de años formándose entre las pizzerías de Argentina y la tradición italiana de la masa madre, Lauta llegó a Chiva con una idea simple: hacer la pizza que a él le gustaría encontrar en casa.
+      </p>
+      <p class="text-ink/70 leading-relaxed">
+        Hoy está al frente de la cocina de Pizzería Mejor Sabe, con la misma receta de siempre: buenos ingredientes, tiempo, y las ganas de que cada plato que sale del horno de piedra te sepa a hogar.
+      </p>
     </div>
-
-    <!-- Grid de platos: se rellena dinámicamente por JS a partir de menuData -->
-    <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      <!-- las .dish-card se inyectan aquí por script.js -->
-    </div>
-
-    <p id="menu-empty" hidden class="text-center text-ink/50 py-16">No hay platos en esta categoría todavía.</p>
   </div>
 </section>
 
 <!-- =========================================================
      UBICACIÓN, HORARIOS Y COMUNIDAD
 ========================================================= -->
-<section id="ubicacion" class="px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+<section id="ubicacion" class="px-4 sm:px-6 lg:px-8 py-14 sm:py-20 bg-creamdark/60">
   <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
 
     <!-- Horarios y dirección -->
     <div>
       <h2 class="font-display text-3xl sm:text-4xl mb-6">Horarios &amp; Ubicación</h2>
 
-      <ul id="hours-list" class="divide-y divide-black/10 border-y border-black/10 mb-8">
+      <ul id="hours-list" class="divide-y divide-black/10 border-y border-black/10 mb-4">
         <!-- filas de horario inyectadas por JS a partir de SITE_CONFIG.hours -->
       </ul>
+
+      <!-- Horario de cocina: texto inyectado por JS a partir de SITE_CONFIG.kitchenHours -->
+      <p class="flex items-center gap-2 text-sm text-ink/70 mb-8">
+        <i data-lucide="chef-hat" class="w-4 h-4 shrink-0"></i>
+        <span id="kitchen-hours-text">Cocina abierta de 19:00 a 23:00</span>
+      </p>
 
       <div class="flex items-start gap-3 mb-6">
         <i data-lucide="map-pin" class="w-5 h-5 mt-0.5 shrink-0"></i>
@@ -285,7 +198,7 @@
     </div>
 
     <!-- Bloque comunidad / Instagram -->
-    <div id="comunidad" class="flex flex-col justify-center bg-creamdark/70 border border-black/10 rounded-3xl p-6 sm:p-8 text-center overflow-hidden">
+    <div id="comunidad" class="flex flex-col justify-center bg-white border border-black/10 rounded-3xl p-6 sm:p-8 text-center overflow-hidden">
 
       <!-- Mosaico de fotos: da vida visual al bloque a modo de "vista previa" del feed -->
       <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mb-6">
@@ -350,17 +263,24 @@
 </section>
 
 <!-- =========================================================
-     FOOTER
+     FOOTER (idéntico en todas las páginas del sitio)
 ========================================================= -->
 <footer class="border-t border-black/10 px-4 sm:px-6 lg:px-8 py-8">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink/50">
-    <p>&copy; <span id="year"></span> Pizzería Mejor Sabe. Todos los derechos reservados.</p>
-    <p>Hecho con horno de piedra y cariño.</p>
+  <div class="max-w-6xl mx-auto flex flex-col gap-4">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink/50 text-center sm:text-left">
+      <p>&copy; <span id="year"></span> Pizzería Mejor Sabe. Todos los derechos reservados.</p>
+      <p>Hecho con horno de piedra y cariño.</p>
+    </div>
+    <div class="flex items-center justify-center gap-3 text-xs text-ink/40 pt-4 border-t border-black/5">
+      <a href="aviso-legal.html" class="hover:text-ink transition-colors">Aviso Legal</a>
+      <span aria-hidden="true">·</span>
+      <a href="cookies.html" class="hover:text-ink transition-colors">Política de Cookies</a>
+    </div>
   </div>
 </footer>
 
 <!-- =========================================================
-     BOTONES FLOTANTES DE ACCIÓN RÁPIDA
+     BOTONES FLOTANTES DE ACCIÓN RÁPIDA (idénticos en todas las páginas)
 ========================================================= -->
 <a id="whatsapp-float" href="#" target="_blank" rel="noopener" aria-label="Reservar por WhatsApp"
    class="float-btn safe-bottom-5 fixed right-5 z-50 w-14 h-14 rounded-full bg-ink text-cream flex items-center justify-center shadow-lg hover:opacity-85 transition-opacity">
@@ -376,489 +296,9 @@
 </a>
 
 <!-- =========================================================
-     JAVASCRIPT
+     DATOS Y LÓGICA DEL SITIO (compartidos por todas las páginas)
 ========================================================= -->
-<script>
-/* =====================================================================
-   CONFIGURACIÓN DEL NEGOCIO
-   -----------------------------------------------------------------
-   Edita únicamente los valores de este bloque antes de publicar el
-   sitio: número de WhatsApp, usuario de Instagram, dirección y
-   horario. El resto del código los usa automáticamente para
-   construir los enlaces y el badge de "Abierto ahora".
-===================================================================== */
-const SITE_CONFIG = {
-  // Número en formato internacional, solo dígitos (sin "+", sin espacios).
-  // Ejemplo España: "34600000000"
-  whatsappNumber: "34722592199", // Número real del local
-
-  whatsappMessage: "Hola, quiero reservar una mesa en Pizzería Mejor Sabe...",
-
-  instagramHandle: "pizzeriamejorsabe", // https://www.instagram.com/pizzeriamejorsabe/
-
-  address: "Calle Dr. Nacher, 45, 46370 Chiva, Valencia",
-
-  // Horario semanal. "shifts" es un array de turnos [apertura, cierre].
-  // Deja "shifts: null" en los días de cierre.
-  // index: 0 = Domingo ... 6 = Sábado (coincide con Date.getDay())
-  hours: [
-    { index: 0, day: "Domingo",  shifts: [["18:00", "00:00"]] },
-    { index: 1, day: "Lunes",    shifts: [["18:00", "00:00"]] },
-    { index: 2, day: "Martes",   shifts: null }, // cerrado
-    { index: 3, day: "Miércoles",shifts: [["18:00", "00:00"]] },
-    { index: 4, day: "Jueves",   shifts: [["18:00", "00:00"]] },
-    { index: 5, day: "Viernes",  shifts: [["18:00", "00:00"]] },
-    { index: 6, day: "Sábado",   shifts: [["18:00", "00:00"]] },
-  ],
-};
-
-/* =====================================================================
-   CARTA — DATOS DE LOS PLATOS
-   -----------------------------------------------------------------
-   Cada objeto representa un plato. Esta estructura está pensada para
-   poder sustituirse en el futuro por una llamada a una API / TPV:
-   basta con reemplazar el array MENU_DATA por el resultado de un
-   fetch() que devuelva el mismo formato, por ejemplo:
-     const MENU_DATA = await fetch('/api/carta').then(r => r.json());
-===================================================================== */
-const MENU_DATA = [
-  // ---- ENTRANTES ----
-  {
-    id: "fingers-queso",
-    category: "entrantes",
-    name: "Fingers de Queso",
-    description: "Bastones de mozzarella empanados y fritos al momento, con salsa barbacoa casera.",
-    price: 7.5,
-    image: "ImagenesMejorSabe/fingersQeso.png",
-    tags: ["Vegetariano"],
-  },
-  {
-    id: "nachos-mejor-sabe",
-    category: "entrantes",
-    name: "Nachos Mejor Sabe",
-    description: "Nachos crujientes servidos con guacamole, salsa de queso y salsa verde picante para mojar.",
-    price: 8.5,
-    image: "ImagenesMejorSabe/nachoMejorSabe.png",
-    tags: ["Vegetariano"],
-  },
-  {
-    id: "patatas-mejor-sabe",
-    category: "entrantes",
-    name: "Patatas Mejor Sabe",
-    description: "Patatas fritas caseras cubiertas de queso fundido y bacon crujiente.",
-    price: 7.0,
-    image: "ImagenesMejorSabe/PatatasMejorSabe.png",
-    tags: [],
-  },
-
-  // ---- PRINCIPALES ----
-  {
-    id: "pizza-serrana",
-    category: "principales",
-    name: "Pizza Serrana",
-    description: "Base de tomate natural, mozzarella fundida al horno de piedra y jamón serrano curado.",
-    price: 11.5,
-    image: "ImagenesMejorSabe/Pizza.png",
-    tags: [],
-  },
-  {
-    id: "pizza-especial",
-    category: "principales",
-    name: "Pizza Especial Mejor Sabe",
-    description: "Mitad y mitad: carbonara de huevo y jamón, y pollo a la brasa bañado en salsa barbacoa casera.",
-    price: 13.0,
-    image: "ImagenesMejorSabe/pizza2.png",
-    tags: [],
-  },
-  {
-    id: "pizza-muzzarella",
-    category: "principales",
-    name: "Pizza Muzzarella",
-    description: "Doble mozzarella y cebolla al horno de piedra, con un toque de salsa verde de la casa.",
-    price: 9.5,
-    image: "ImagenesMejorSabe/PizzaMuzzarella.png",
-    tags: ["Vegetariano"],
-  },
-  {
-    id: "pizza-pina",
-    category: "principales",
-    name: "Pizza Piña",
-    description: "Jamón, mozzarella y piña natural sobre base de tomate. La favorita de los que se atreven.",
-    price: 10.5,
-    image: "ImagenesMejorSabe/PIzzaPina.png",
-    tags: [],
-  },
-  {
-    id: "calzone-mar-del-plata",
-    category: "principales",
-    name: "Calzone Mar del Plata",
-    description: "Nuestra masa horneada y doblada, rellena de jamón, mozzarella y tomate, dorada al horno de piedra.",
-    price: 11.0,
-    image: "ImagenesMejorSabe/CalzoneMarDelPlata.png",
-    tags: [],
-  },
-  {
-    id: "calzone-patagonia",
-    category: "principales",
-    name: "Calzone Patagonia",
-    description: "Calzone relleno de mozzarella y salsa verde de la casa, con un toque de ajo y perejil.",
-    price: 11.5,
-    image: "ImagenesMejorSabe/CalzonePatagonia.png",
-    tags: ["Vegetariano"],
-  },
-  {
-    id: "hamburguesa",
-    category: "principales",
-    name: "Hamburguesa Mejor Sabe",
-    description: "Ternera 100%, bacon crujiente, huevo frito y queso fundido en pan de ciabatta, con patatas caseras.",
-    price: 12.5,
-    image: "ImagenesMejorSabe/hambuerugesa.png",
-    tags: [],
-  },
-
-  // ---- POSTRES ----
-  {
-    id: "coulant",
-    category: "postres",
-    name: "Coulant de Chocolate",
-    description: "Bizcocho de chocolate templado con corazón líquido, helado de vainilla y virutas de chocolate blanco.",
-    price: 5.5,
-    image: "ImagenesMejorSabe/coulantPostre.png",
-    tags: ["Vegetariano"],
-  },
-
-  // ---- BEBIDAS ----
-  {
-    id: "cocteles",
-    category: "bebidas",
-    name: "Coctelería de la Casa",
-    description: "Mojito, Old Fashioned, Cosmopolitan y más clásicos, preparados al momento en barra.",
-    price: 7.5,
-    priceLabel: "Desde 7,50 €",
-    image: "ImagenesMejorSabe/cocteles.png",
-    tags: [],
-  },
-];
-
-/* =====================================================================
-   RESEÑAS DE GOOGLE
-   -----------------------------------------------------------------
-   Reseñas reales copiadas de la ficha de Google del local. Para
-   añadir o quitar una, basta con editar este array: la pasarela se
-   regenera sola. El orden aquí es el orden en que aparecen (la de
-   Mario Fernandez se deja al final a propósito).
-===================================================================== */
-const REVIEWS_DATA = [
-  {
-    name: "Anabel Saavedra Ramirez",
-    meta: "3 reseñas · 2 fotos",
-    time: "Hace 5 meses",
-    text: "La comida, el servicio y el ambiente… sin palabras de lo bien que hemos estado. Los nachos y las pizzas, deliciosas 😊",
-  },
-  {
-    name: "Carmen Payá",
-    meta: "8 reseñas · 3 fotos",
-    time: "Hace 7 meses",
-    text: "Es un restaurante al que volvería, y que vale muchísimo la pena, tanto por la calidad de la comida como por el buen servicio. ¡Un 10 de 10 sin lugar a dudas!",
-  },
-  {
-    name: "Librepensador Estoico",
-    badge: "Local Guide",
-    meta: "38 reseñas · 6 fotos",
-    time: "Hace 2 meses",
-    text: "Un excelente lugar donde disfrutar de una buena pizza y muchas cosas más. Un ambiente perfecto, muy buena ubicación y un servicio genial.",
-  },
-  {
-    name: "Chiara Soltys",
-    meta: "10 reseñas · 2 fotos",
-    time: "Hace 8 meses",
-    text: "Excelente servicio y amabilidad, de las mejores pizzas que he probado. Muy buena la atención de Lautaro, ¡súper recomendable! Volveremos cada fin de semana.",
-  },
-  {
-    name: "Mario Fernandez",
-    meta: "3 reseñas",
-    time: "Hace 3 años",
-    text: "Una mezcla de etnias muy amables, con un gran recibimiento. Es más que agradable disfrutar de la gastronomía italiana con ingredientes españoles, elaborada por un argentino y servida con un trato que no necesita tu cartera. Imposible encontrar mejor experiencia gastronómica y multicultural en Chiva.",
-  },
-];
-
-/* =====================================================================
-   INICIALIZACIÓN
-===================================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  applyConfigLinks();
-  renderMenu("entrantes"); // Arranca mostrando una sola categoría, no la carta entera
-  setupTabs();
-  setupMobileMenu();
-  setupHeaderScroll();
-  renderHours();
-  updateOpenBadge();
-  renderReviews();
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  if (window.lucide) lucide.createIcons();
-});
-
-/* ---------------------------------------------------------------------
-   Aplica la configuración del negocio a todos los enlaces del sitio
-   (WhatsApp, Instagram y Google Maps) para no repetirlos a mano.
---------------------------------------------------------------------- */
-function applyConfigLinks() {
-  const waLink =
-    "https://wa.me/" +
-    SITE_CONFIG.whatsappNumber +
-    "?text=" +
-    encodeURIComponent(SITE_CONFIG.whatsappMessage);
-
-  document.getElementById("whatsapp-float").href = waLink;
-  document.getElementById("reservar-btn").href = waLink;
-
-  const mapsLink =
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent(SITE_CONFIG.address);
-
-  document.getElementById("hero-maps-btn").href = mapsLink;
-  document.getElementById("ubicacion-maps-btn").href = mapsLink;
-  document.getElementById("address-maps-link").href = mapsLink;
-  document.getElementById("address-text").textContent = SITE_CONFIG.address;
-
-  document.querySelectorAll('a[href*="instagram.com/tuusuario"]').forEach((a) => {
-    a.href = "https://instagram.com/" + SITE_CONFIG.instagramHandle;
-  });
-  document
-    .querySelectorAll("#comunidad h3")
-    .forEach((el) => (el.textContent = "Síguenos en @" + SITE_CONFIG.instagramHandle));
-}
-
-/* ---------------------------------------------------------------------
-   Renderiza únicamente los platos de la categoría seleccionada. Así
-   el cliente ve solo lo que le interesa, sin tener que bajar por
-   toda la carta para llegar, por ejemplo, a las bebidas.
---------------------------------------------------------------------- */
-function renderMenu(category) {
-  const grid = document.getElementById("menu-grid");
-  const empty = document.getElementById("menu-empty");
-  grid.innerHTML = "";
-
-  const items = MENU_DATA.filter((d) => d.category === category);
-
-  if (items.length === 0) {
-    empty.hidden = false;
-    return;
-  }
-  empty.hidden = true;
-
-  items.forEach((dish) => grid.appendChild(buildDishCard(dish)));
-  if (window.lucide) lucide.createIcons();
-}
-
-function buildDishCard(dish) {
-  const card = document.createElement("article");
-  card.className =
-    "dish-card bg-white border border-black/10 rounded-2xl overflow-hidden flex flex-col";
-  card.dataset.category = dish.category;
-
-  const priceText = dish.priceLabel
-    ? dish.priceLabel
-    : dish.price.toFixed(2).replace(".", ",") + " €";
-
-  card.innerHTML = `
-    ${
-      dish.image
-        ? `<div class="aspect-[4/3] overflow-hidden bg-creamdark">
-             <img src="${dish.image}" alt="${dish.name}" loading="lazy" class="w-full h-full object-cover" />
-           </div>`
-        : ""
-    }
-    <div class="p-5 flex flex-col gap-2 flex-1">
-      <div class="flex items-start justify-between gap-3">
-        <h3 class="font-display text-lg leading-snug">${dish.name}</h3>
-        <span class="font-medium whitespace-nowrap">${priceText}</span>
-      </div>
-      <p class="text-sm text-ink/60 flex-1">${dish.description}</p>
-      ${
-        dish.tags && dish.tags.length
-          ? `<div class="flex flex-wrap gap-1.5 pt-1">
-               ${dish.tags
-                 .map(
-                   (t) =>
-                     `<span class="text-[11px] uppercase tracking-wide border border-black/15 rounded-full px-2.5 py-1 text-ink/60">${t}</span>`
-                 )
-                 .join("")}
-             </div>`
-          : ""
-      }
-    </div>
-  `;
-  return card;
-}
-
-/* ---------------------------------------------------------------------
-   Pestañas de categoría: filtran el grid sin recargar la página.
---------------------------------------------------------------------- */
-function setupTabs() {
-  const tabs = document.querySelectorAll(".tab-btn");
-  tabs.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      tabs.forEach((b) => b.classList.remove("is-active"));
-      btn.classList.add("is-active");
-      renderMenu(btn.dataset.category);
-    });
-  });
-}
-
-/* ---------------------------------------------------------------------
-   Menú móvil: abre/cierra el panel y cierra al pulsar un enlace.
---------------------------------------------------------------------- */
-function setupMobileMenu() {
-  const btn = document.getElementById("mobile-menu-btn");
-  const menu = document.getElementById("mobile-menu");
-
-  btn.addEventListener("click", () => {
-    const isOpen = !menu.hidden;
-    menu.hidden = isOpen;
-    btn.setAttribute("aria-expanded", String(!isOpen));
-    btn.innerHTML = isOpen
-      ? '<i data-lucide="menu" class="w-5 h-5"></i>'
-      : '<i data-lucide="x" class="w-5 h-5"></i>';
-    if (window.lucide) lucide.createIcons();
-  });
-
-  menu.querySelectorAll(".mobile-link").forEach((link) => {
-    link.addEventListener("click", () => {
-      menu.hidden = true;
-      btn.setAttribute("aria-expanded", "false");
-      btn.innerHTML = '<i data-lucide="menu" class="w-5 h-5"></i>';
-      if (window.lucide) lucide.createIcons();
-    });
-  });
-}
-
-/* ---------------------------------------------------------------------
-   Header: añade fondo + blur en cuanto el usuario hace scroll.
---------------------------------------------------------------------- */
-function setupHeaderScroll() {
-  const header = document.getElementById("site-header");
-  const onScroll = () => {
-    if (window.scrollY > 8) {
-      header.classList.add("bg-cream/90", "backdrop-blur-md", "border-black/10", "shadow-sm");
-    } else {
-      header.classList.remove("bg-cream/90", "backdrop-blur-md", "border-black/10", "shadow-sm");
-    }
-  };
-  document.addEventListener("scroll", onScroll);
-  onScroll();
-}
-
-/* ---------------------------------------------------------------------
-   Pinta la lista de horarios a partir de SITE_CONFIG.hours.
---------------------------------------------------------------------- */
-function renderHours() {
-  const list = document.getElementById("hours-list");
-  const today = new Date().getDay();
-
-  list.innerHTML = SITE_CONFIG.hours
-    .map((d) => {
-      const isToday = d.index === today;
-      const shiftsText = d.shifts
-        ? d.shifts.map((s) => `${s[0]}–${s[1]}`).join("  /  ")
-        : "Cerrado";
-      return `
-        <li class="flex items-center justify-between py-3 text-sm ${
-          isToday ? "font-semibold" : "text-ink/70"
-        }">
-          <span>${d.day}${isToday ? " · hoy" : ""}</span>
-          <span>${shiftsText}</span>
-        </li>`;
-    })
-    .join("");
-}
-
-/* ---------------------------------------------------------------------
-   Pinta la pasarela de reseñas. El array REVIEWS_DATA se dibuja dos
-   veces, una a continuación de la otra, para que la animación CSS
-   (translateX(-50%)) genere un scroll infinito sin cortes visibles.
---------------------------------------------------------------------- */
-function renderReviews() {
-  const track = document.getElementById("reviews-track");
-  const doubled = [...REVIEWS_DATA, ...REVIEWS_DATA];
-  track.innerHTML = doubled.map(buildReviewCardHTML).join("");
-}
-
-function buildReviewCardHTML(review) {
-  const initial = review.name.trim().charAt(0).toUpperCase();
-  const stars = '<i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>'.repeat(5);
-
-  return `
-    <article class="review-card shrink-0 bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-3 text-left" aria-hidden="true">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-ink text-cream flex items-center justify-center font-display text-base shrink-0">
-          ${initial}
-        </div>
-        <div class="min-w-0">
-          <p class="font-medium text-sm truncate">${review.name}</p>
-          <p class="text-xs text-ink/50 truncate">
-            ${review.badge ? review.badge + " · " : ""}${review.meta}
-          </p>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <div class="flex gap-0.5">${stars}</div>
-        <span class="text-xs text-ink/40">${review.time}</span>
-      </div>
-
-      <p class="text-sm text-ink/70 leading-relaxed">${review.text}</p>
-    </article>
-  `;
-}
-
-/* ---------------------------------------------------------------------
-   Calcula si el local está abierto ahora mismo y actualiza el badge
-   del hero ("Abierto hoy de..." / "Cerrado ahora").
---------------------------------------------------------------------- */
-function updateOpenBadge() {
-  const dot = document.getElementById("open-dot");
-  const text = document.getElementById("open-text");
-
-  const now = new Date();
-  const today = SITE_CONFIG.hours.find((d) => d.index === now.getDay());
-  const nowMinutes = now.getHours() * 60 + now.getMinutes();
-
-  const toMinutes = (hhmm) => {
-    const [h, m] = hhmm.split(":").map(Number);
-    return h === 0 ? 24 * 60 + m : h * 60 + m; // 00:00 se trata como cierre de madrugada
-  };
-
-  let isOpenNow = false;
-  let currentOrNextShift = null;
-
-  if (today && today.shifts) {
-    for (const [open, close] of today.shifts) {
-      const o = toMinutes(open);
-      const c = toMinutes(close);
-      if (nowMinutes >= o && nowMinutes < c) {
-        isOpenNow = true;
-        currentOrNextShift = [open, close];
-        break;
-      }
-      if (nowMinutes < o && !currentOrNextShift) {
-        currentOrNextShift = [open, close];
-      }
-    }
-  }
-
-  if (isOpenNow) {
-    dot.className = "w-2 h-2 rounded-full bg-green-600";
-    text.textContent = `Abierto ahora · hoy hasta las ${currentOrNextShift[1]}`;
-  } else if (currentOrNextShift) {
-    dot.className = "w-2 h-2 rounded-full bg-amber-500";
-    text.textContent = `Cerrado ahora · hoy abrimos a las ${currentOrNextShift[0]}`;
-  } else {
-    dot.className = "w-2 h-2 rounded-full bg-red-500";
-    text.textContent = "Hoy cerrado";
-  }
-}
-</script>
+<script src="assets/site-data.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>
